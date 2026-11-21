@@ -1,0 +1,6 @@
+[
+  { "file": "1-dashboard.jpg", "path": "/?demo=1#/trophy/14", "scene": "Checklist cover: 55 trophies / 13 earned / platinum progress, grade summary, filters, the official list with part-way counters, and the gold 100% trophy guide with its Sources panel (demo preview data)", "viewport": { "width": 1280, "height": 800 } },
+  { "file": "2-detail-sources.jpg", "path": "/?demo=1#/trophy/34", "scene": "Detail pane for Retail Therapy: official description, attempt-scoped missable callout, how/where/when guidance and the Exophase / PSNProfiles / our-own-advice Sources line", "viewport": { "width": 1280, "height": 800 } },
+  { "file": "3-roadmap.jpg", "path": "/?demo=1#/roadmap", "scene": "Platinum roadmap: seven ordered passes from the story spine to 100%, per-phase progress, and the missable watchlist with attach/unknown timing flags", "viewport": { "width": 1280, "height": 800 } },
+  { "file": "4-spoiler-filters.jpg", "path": "/?demo=1&spoiler=1&grade=bronze&missable=1#/trophy/48", "scene": "Spoiler-safe mode with bronze and missable-only filters: hidden trophies masked in the list, a locked detail pane, and counters still visible", "viewport": { "width": 1280, "height": 800 } }
+]
