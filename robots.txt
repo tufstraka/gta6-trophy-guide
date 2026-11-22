@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tufstraka.github.io/gta6-trophy-guide/sitemap.xml
