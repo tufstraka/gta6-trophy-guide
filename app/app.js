@@ -4,6 +4,7 @@
 
 const STORAGE_KEY = 'platinum-leonida/v1';
 const LEGACY_KEY = 'leonida-ledger/v1';
+const FOOTER_KEY = 'platinum-leonida/footer-dismissed';
 const GRADES = ['platinum', 'gold', 'silver', 'bronze'];
 const GRADE_LABEL = { platinum: 'Platinum', gold: 'Gold', silver: 'Silver', bronze: 'Bronze' };
 const KIND_LABEL = {
@@ -195,6 +196,13 @@ function renderFilters() {
     chip('Missable only', 'missable', 'missable', state.filters.missable, `<span class="n">${missableList().length}</span>`),
   ].join('');
 
+  const activeFilters = [state.filters.grade !== 'all', state.filters.kind !== 'all', state.filters.status !== 'all', state.filters.missable].filter(Boolean).length;
+  const filterCount = el('filter-count');
+  if (filterCount) {
+    filterCount.textContent = activeFilters ? String(activeFilters) : '';
+    filterCount.hidden = !activeFilters;
+  }
+
   el('spoiler').checked = state.spoiler;
   el('search').value = state.filters.q;
   el('clear-search').hidden = !state.filters.q;
@@ -305,7 +313,7 @@ function detailHTML(t) {
           <button type="button" data-count="${t.id}" data-delta="-1" aria-label="Decrease progress">&#8722;</button>
           <input type="number" inputmode="numeric" min="0" max="${t.target}" value="${countOf(t)}" data-count-input="${t.id}" aria-label="Progress for ${esc(t.name)}">
           <button type="button" data-count="${t.id}" data-delta="1" aria-label="Increase progress">+</button>
-          <span class="unit">of ${fmt(t.target)} ${esc(t.unit)}</span>
+          <span class="unit">of ${esc(unitText(t, t.target))}</span>
           <button class="btn small quiet setmax" type="button" data-count="${t.id}" data-delta="${t.target - countOf(t)}" title="Set the counter to its target and mark it earned">Max</button>
         </div>
       </div>
@@ -559,7 +567,7 @@ function setCount(id, n) {
   renderAll();
 }
 
-function selectTrophy(id) {
+function selectTrophy(id, scrollToDetail = false) {
   state.selected = Number(id);
   if (state.tab !== 'checklist') setTab('checklist', false);
   location.hash = `#/trophy/${state.selected}`;
@@ -567,6 +575,9 @@ function selectTrophy(id) {
   renderDetail();
   const row = el('trophylist').querySelector(`[data-id="${state.selected}"]`);
   if (row) row.scrollIntoView({ block: 'nearest' });
+  if (scrollToDetail && window.matchMedia('(max-width: 860px)').matches) {
+    el('detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 function setTab(tab, push = true) {
@@ -694,7 +705,7 @@ function bind() {
     const check = e.target.closest('[data-check]');
     if (check) { e.stopPropagation(); toggleEarned(check.dataset.check); return; }
     const row = e.target.closest('[data-id]');
-    if (row) selectTrophy(row.dataset.id);
+    if (row) selectTrophy(row.dataset.id, true);
   });
 
   el('detail').addEventListener('click', (e) => {
@@ -770,6 +781,34 @@ function route() {
   if (['checklist', 'roadmap', 'missables', 'progress'].includes(h)) setTab(h, false);
 }
 
+/* ---------------- footer and filters chrome ---------------- */
+function setupFooter() {
+  const foot = el('foot');
+  const close = el('foot-close');
+  if (!foot || !close) return;
+  try { foot.hidden = localStorage.getItem(FOOTER_KEY) === '1'; } catch { foot.hidden = false; }
+  close.addEventListener('click', () => {
+    foot.hidden = true;
+    try { localStorage.setItem(FOOTER_KEY, '1'); } catch { /* storage blocked: just hide it */ }
+  });
+}
+
+function setFiltersCollapsed(collapsed) {
+  const body = el('filter-chips');
+  const btn = el('filters-toggle');
+  if (!body || !btn) return;
+  body.hidden = collapsed;
+  btn.setAttribute('aria-expanded', String(!collapsed));
+  btn.classList.toggle('is-collapsed', collapsed);
+}
+
+function setupFilters() {
+  const btn = el('filters-toggle');
+  if (!btn) return;
+  setFiltersCollapsed(window.matchMedia('(max-width: 640px)').matches);
+  btn.addEventListener('click', () => setFiltersCollapsed(btn.getAttribute('aria-expanded') === 'true'));
+}
+
 /* ---------------- boot ---------------- */
 async function boot() {
   const res = await fetch('data/trophies.json');
@@ -780,6 +819,8 @@ async function boot() {
   load();
   applyParams();
   bind();
+  setupFooter();
+  setupFilters();
   const h = location.hash.replace(/^#\/?/, '');
   if (h.startsWith('trophy/')) {
     const id = Number(h.slice(7));
@@ -792,6 +833,9 @@ async function boot() {
   }
   renderAll();
   route();
+  if (window.matchMedia('(max-width: 860px)').matches && h.startsWith('trophy/')) {
+    el('detail').scrollIntoView({ block: 'start' });
+  }
   const chosen = el('trophylist').querySelector(`[data-id="${state.selected}"]`);
   if (chosen) {
     const rowBox = chosen.getBoundingClientRect();

@@ -101,9 +101,9 @@
 
 <nav class="tabs" role="tablist" aria-label="Guide sections">
   <button class="tab" role="tab" id="tab-checklist" data-tab="checklist" aria-controls="view-checklist" aria-selected="true"><span class="tabnum">01</span> Checklist <span class="tabcount" id="tabcount">0/55</span></button>
-  <button class="tab" role="tab" id="tab-roadmap" data-tab="roadmap" aria-controls="view-roadmap" aria-selected="false"><span class="tabnum">02</span> Platinum roadmap</button>
+  <button class="tab" role="tab" id="tab-roadmap" data-tab="roadmap" aria-controls="view-roadmap" aria-selected="false"><span class="tabnum">02</span> <span class="tab-label"><span class="lbl-long">Platinum roadmap</span><span class="lbl-short">Roadmap</span></span></button>
   <button class="tab" role="tab" id="tab-missables" data-tab="missables" aria-controls="view-missables" aria-selected="false"><span class="tabnum">03</span> Missables <span class="tabcount" id="misscount">0</span></button>
-  <button class="tab" role="tab" id="tab-progress" data-tab="progress" aria-controls="view-progress" aria-selected="false"><span class="tabnum">04</span> Progress &amp; data</button>
+  <button class="tab" role="tab" id="tab-progress" data-tab="progress" aria-controls="view-progress" aria-selected="false"><span class="tabnum">04</span> <span class="tab-label"><span class="lbl-long">Progress &amp; data</span><span class="lbl-short">Progress</span></span></button>
   <span class="tabhint"><kbd>1</kbd>-<kbd>4</kbd> switch · <kbd>/</kbd> search · <kbd>e</kbd> earned · <kbd>j</kbd><kbd>k</kbd> browse</span>
 </nav>
 
@@ -114,15 +114,21 @@
         <div class="searchrow">
           <label class="search" for="search">
             <span class="search-icon" aria-hidden="true">&#9906;</span>
-            <input id="search" type="search" placeholder="Search names, descriptions and guides" autocomplete="off" spellcheck="false">
+            <input id="search" type="search" placeholder="Search trophies and guides" autocomplete="off" spellcheck="false">
           </label>
           <button class="ghostbtn" id="clear-search" type="button" hidden>Clear</button>
         </div>
 
+        <button class="filters-toggle" id="filters-toggle" type="button" aria-expanded="true" aria-controls="filter-chips">
+          <span>Filters</span>
+          <span class="fcount" id="filter-count" hidden></span>
+        </button>
         <div class="filters">
+          <div class="filters-body" id="filter-chips">
           <div class="chiprow" id="grade-filters" role="group" aria-label="Filter by trophy grade"></div>
           <div class="chiprow" id="kind-filters" role="group" aria-label="Filter by trophy kind"></div>
           <div class="chiprow" id="status-filters" role="group" aria-label="Filter by earned state"></div>
+          </div>
           <div class="filterfoot">
             <label class="switch" for="spoiler">
               <input type="checkbox" id="spoiler">
@@ -156,7 +162,8 @@
   <section class="view view-scroll" id="view-progress" role="tabpanel" aria-labelledby="tab-progress" hidden></section>
 </main>
 
-<footer class="foot">
+<footer class="foot" id="foot">
+  <button class="foot-close" id="foot-close" type="button" aria-label="Dismiss sources">&times;</button>
   <p><strong>Sources.</strong> Names, descriptions and grades: Exophase (the official trophy list). PSN progress counters: PSNProfiles, where used. Mission order, locations and methods in Our advice were checked against launch-week guides (PowerPyx, PlayStationTrophies, gta.guide). No official artwork is used in this guide.</p>
   <p class="foot-meta">Platinum Leonida is an unofficial fan guide. Grand Theft Auto VI is a trademark of its owners; this page is not affiliated with them.</p>
 </footer>
