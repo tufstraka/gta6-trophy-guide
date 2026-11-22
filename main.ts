@@ -22,7 +22,7 @@ import { buildDossier } from './vendor/makefun-frontend.ts';
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
-// Leonida Ledger's own guard: the guide's data is checked before it is handed in,
+// Platinum Leonida's own guard: the guide's data is checked before it is handed in,
 // so a truncated trophy list or an empty guide fails here instead of in the browser.
 const dataFile = join(here, 'app', 'data', 'trophies.json');
 const listed = JSON.parse(readFileSync(dataFile, 'utf8')).trophies as Array<{ name: string; guide?: string }>;

@@ -1,4 +1,4 @@
-// Leonida Ledger preview server. It serves app/ exactly as it is handed in, so the checklist, roadmap,
+// Platinum Leonida preview server. It serves app/ exactly as it is handed in, so the checklist, roadmap,
 // missables page and the saved counters can all be checked in a browser with the network off.
 //
 // A tiny static server for app/ (Node 22, standard library only), so the guide can be run locally without a
@@ -63,5 +63,5 @@ createServer((request, response) => {
   });
   createReadStream(file).pipe(response);
 }).listen(port, '127.0.0.1', () => {
-  console.log(`Leonida Ledger: app/ is on http://localhost:${port}`);
+  console.log(`Platinum Leonida: app/ is on http://localhost:${port}`);
 });

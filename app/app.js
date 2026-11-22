@@ -1,8 +1,9 @@
-// Leonida Ledger - an offline GTA VI trophy tracker and sourced guide.
+// Platinum Leonida - an offline GTA VI trophy tracker and sourced guide.
 // Data: data/trophies.json (official names, descriptions and grades).
 // Progress lives in localStorage; export/import is plain JSON.
 
-const STORAGE_KEY = 'leonida-ledger/v1';
+const STORAGE_KEY = 'platinum-leonida/v1';
+const LEGACY_KEY = 'leonida-ledger/v1';
 const GRADES = ['platinum', 'gold', 'silver', 'bronze'];
 const GRADE_LABEL = { platinum: 'Platinum', gold: 'Gold', silver: 'Silver', bronze: 'Bronze' };
 const KIND_LABEL = {
@@ -88,7 +89,7 @@ function save() {
 
 function load() {
   let stored = null;
-  try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null'); } catch { stored = null; }
+  try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_KEY) ?? 'null'); } catch { stored = null; }
   if (!stored) return;
   if (Array.isArray(stored.earned)) {
     // Names are the portable key: a save survives even if ids ever move.
@@ -236,12 +237,6 @@ function renderList() {
 }
 
 /* ---------------- detail ---------------- */
-function sourceParts(s) {
-  const i = s.indexOf(' - ');
-  if (i === -1) return { name: 'Source', text: s };
-  return { name: s.slice(0, i), text: s.slice(i + 3) };
-}
-
 function advicePanel(t) {
   if (!t.advice) return '';
   return `<div class="panel wide advice">
@@ -337,13 +332,6 @@ function detailHTML(t) {
       </div>
       ${advicePanel(t)}
       ${counter}
-      <div class="panel wide sources">
-        <p class="panel-label">Sources for this page</p>
-        <ol>${t.sources.map((s) => {
-          const p = sourceParts(s);
-          return `<li><span class="src-name">${esc(p.name)}</span><span>${esc(p.text)}</span></li>`;
-        }).join('')}</ol>
-      </div>
     </div>
     ${prevNext}`;
 }
@@ -352,7 +340,7 @@ function renderDetail() {
   const pane = el('detail');
   const t = state.selected != null ? state.byId.get(state.selected) : null;
   if (!t) {
-    pane.innerHTML = `<div class="locked"><h3>Pick a trophy</h3><p>Choose any trophy on the left for its guide, location notes, missable window and sources.</p></div>`;
+    pane.innerHTML = `<div class="locked"><h3>Pick a trophy</h3><p>Choose any trophy on the left for its guide, location notes, missable window and our advice.</p></div>`;
     return;
   }
   pane.innerHTML = detailHTML(t);
@@ -440,7 +428,7 @@ function renderMissables() {
         <button class="btn small ${isEarned(t) ? '' : 'primary'}" type="button" data-toggle-earned="${t.id}">${isEarned(t) ? '&#10003; Earned' : 'Mark earned'}</button>
       </div>
       <p class="adv"><b>Our advice</b>${esc(t.advice)}</p>
-      <p class="src">Sources: Exophase (description, grade); mission context checked against launch-week guides.</p>
+
     </article>`).join('');
 
   el('view-missables').innerHTML = `
@@ -519,7 +507,7 @@ function renderProgress() {
           <ul class="sourcelist">
             <li><strong>Official list</strong>Exophase: each trophy's name, description and grade. Nothing here renames or regrades them.</li>
             <li><strong>PSN targets</strong>PSNProfiles: used only where PSN tracks a counter the description does not spell out, as on Actions Speak Louder (500 choices).</li>
-            <li><strong>Guidance</strong>Mission order, locations and methods come from launch-week guides, and each detail pane keeps that advice beside its sources. Where something is still unconfirmed, the advice says so.</li>
+            <li><strong>Guidance</strong>Mission order, locations and methods come from launch-week guides. Where something is still unconfirmed, the advice says so.</li>
             <li><strong>No artwork</strong>No Rockstar logo, no official artwork, no external fonts or files. The page runs offline from its own folder.</li>
           </ul>
         </div>
@@ -598,7 +586,7 @@ function setTab(tab, push = true) {
 
 function exportSave() {
   const payload = {
-    format: 'leonida-ledger/v1',
+    format: 'platinum-leonida/v1',
     game: state.doc.game,
     platform: state.doc.platform,
     exportedAt: new Date().toISOString(),
@@ -608,7 +596,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'leonida-ledger-progress.json';
+  a.download = 'platinum-leonida-progress.json';
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   toast(`Exported ${payload.earned.length} earned trophies`);
@@ -639,7 +627,7 @@ async function importSave(file) {
     renderAll();
     toast(`Imported ${earned.size} earned trophies`);
   } catch {
-    toast('That file is not a Leonida Ledger save');
+    toast('That file is not a Platinum Leonida save');
   }
 }
 
