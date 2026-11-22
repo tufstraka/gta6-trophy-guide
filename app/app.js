@@ -130,7 +130,7 @@ function visible() {
     if (status === 'unearned' && isEarned(t)) return false;
     if (missable && t.missable === 'none') return false;
     if (needle) {
-      const hay = `${t.name} ${t.description} ${t.guide} ${t.where} ${t.kind} ${t.grade}`.toLowerCase();
+      const hay = `${t.name} ${t.description} ${t.guide} ${t.advice ?? ''} ${t.where} ${t.kind} ${t.grade}`.toLowerCase();
       if (!hay.includes(needle)) return false;
     }
     return true;
@@ -237,10 +237,17 @@ function renderList() {
 
 /* ---------------- detail ---------------- */
 function sourceParts(s) {
-  if (s.startsWith('Our own advice')) return { name: 'Our advice', text: 'From the official description, not yet checked in the game.' };
   const i = s.indexOf(' - ');
   if (i === -1) return { name: 'Source', text: s };
   return { name: s.slice(0, i), text: s.slice(i + 3) };
+}
+
+function advicePanel(t) {
+  if (!t.advice) return '';
+  return `<div class="panel wide advice">
+        <p class="panel-label">Our advice</p>
+        <p>${esc(t.advice)}</p>
+      </div>`;
 }
 
 function unitText(t, n) {
@@ -328,6 +335,7 @@ function detailHTML(t) {
         <p class="panel-label">When, and what can close</p>
         <p>${esc(t.when)}</p>
       </div>
+      ${advicePanel(t)}
       ${counter}
       <div class="panel wide sources">
         <p class="panel-label">Sources for this page</p>
@@ -431,7 +439,8 @@ function renderMissables() {
         <button class="btn small" type="button" data-goto="${t.id}">Open guide</button>
         <button class="btn small ${isEarned(t) ? '' : 'primary'}" type="button" data-toggle-earned="${t.id}">${isEarned(t) ? '&#10003; Earned' : 'Mark earned'}</button>
       </div>
-      <p class="src">Sources: Exophase (description, grade); our own advice from the official description, not yet checked in the game.</p>
+      <p class="adv"><b>Our advice</b>${esc(t.advice)}</p>
+      <p class="src">Sources: Exophase (description, grade); mission context checked against launch-week guides.</p>
     </article>`).join('');
 
   el('view-missables').innerHTML = `
@@ -510,7 +519,7 @@ function renderProgress() {
           <ul class="sourcelist">
             <li><strong>Official list</strong>Exophase: each trophy's name, description and grade. Nothing here renames or regrades them.</li>
             <li><strong>PSN targets</strong>PSNProfiles: used only where PSN tracks a counter the description does not spell out, as on Actions Speak Louder (500 choices).</li>
-            <li><strong>Guidance</strong>Our own advice from the official description, not yet checked in the game. Every detail pane carries its own Sources line; we name no location or step the official text does not support.</li>
+            <li><strong>Guidance</strong>Mission order, locations and methods come from launch-week guides, and each detail pane keeps that advice beside its sources. Where something is still unconfirmed, the advice says so.</li>
             <li><strong>No artwork</strong>No Rockstar logo, no official artwork, no external fonts or files. The page runs offline from its own folder.</li>
           </ul>
         </div>

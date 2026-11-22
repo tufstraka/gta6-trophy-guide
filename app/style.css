@@ -547,6 +547,104 @@ main { flex: 1; min-height: 0; display: flex; flex-direction: column; }
   .view-scroll { padding: 18px; }
   .foot { display: none; }
 }
+/* ---------- advice ---------- */
+.panel.advice {
+  border-color: #ecc4b7;
+  background: linear-gradient(180deg, #fff9f2, var(--card));
+}
+.panel.advice .panel-label::before { content: "\25C6"; font-size: 8px; color: var(--coral); }
+.miss-card .adv {
+  font-size: 11px; line-height: 1.5; color: var(--ink-2); margin-top: 8px;
+}
+.miss-card .adv b {
+  display: block; font-size: 8.5px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--coral-dark); margin-bottom: 1px;
+}
+.noscript {
+  margin: 16px 24px 0; padding: 14px 18px; max-width: 82ch;
+  border: 1px solid var(--rule-strong); border-radius: 8px; background: var(--card);
+}
+.noscript h2 { font-size: 21px; margin-bottom: 4px; }
+.noscript p { font-size: 12.5px; color: var(--ink-2); margin-top: 6px; }
+.noscript a { color: var(--coral-dark); }
+
+/* ---------- narrower screens: tablet and phone ---------- */
+@media (max-width: 860px) {
+  html { -webkit-text-size-adjust: 100%; }
+  .tabs { overflow-x: auto; padding: 0 14px; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: none; padding: 11px 11px 9px; }
+  .listpane { max-height: 46vh; }
+  .detailpane { padding: 16px 18px 24px; }
+  .foot { display: flex; flex-direction: column; gap: 6px; padding: 9px 18px 12px; }
+  .foot-meta { white-space: normal; }
+  .toast { left: 12px; right: 12px; transform: none; text-align: center; }
+}
+
+@media (max-width: 640px) {
+  .masthead { padding: 12px 15px 10px; gap: 12px; }
+  .masthead h1 { font-size: clamp(26px, 7.4vw, 33px); }
+  .dek { font-size: 12.5px; }
+  .dashboard { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding-top: 2px; }
+  .stat { min-width: 0; }
+  .stat-value { font-size: 26px; }
+  .stat-label { font-size: 8.5px; letter-spacing: .1em; }
+  .statwide { padding-top: 7px; }
+  .gradebars { gap: 2px 8px; }
+  .tabs { padding: 0 8px; }
+  .tab { font-size: 11.5px; padding: 10px 8px 8px; }
+  .tabcount { padding: 1px 6px; }
+  .searchrow { padding: 8px 12px 6px; }
+  .search input { font-size: 16px; }
+  .filters { padding: 0 12px 8px; }
+  .chip { font-size: 10.5px; padding: 4px 9px 4px 7px; min-height: 26px; }
+  .check { width: 22px; height: 22px; }
+  .trow { grid-template-columns: 22px minmax(0, 1fr) auto; gap: 8px; padding: 7px 8px; }
+  .listfoot { flex-wrap: wrap; }
+  .listfoot-note { margin-left: 0; width: 100%; }
+  .view-scroll { padding: 16px 13px 26px; }
+  .page-head { margin-bottom: 14px; }
+  .page-head h2 { font-size: 24px; }
+  .page-head p { font-size: 12.5px; }
+  .detail-title { font-size: 24px; }
+  .detail-head { gap: 6px; }
+  .detail-head .spacer { display: none; }
+  .detail-head .btn { margin-left: auto; }
+  .quote { font-size: 14.5px; }
+  .panel { padding: 9px 11px; }
+  .panel p { font-size: 11.8px; }
+  .sources li { grid-template-columns: 1fr; gap: 1px; }
+  .counter-top { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .stepper { flex-wrap: wrap; }
+  .stepper .unit { width: 100%; }
+  .stepper .setmax { margin-left: 0; }
+  .detailnav { flex-wrap: wrap; }
+  .detailnav .hint { width: 100%; margin-left: 0; }
+  .phase { grid-template-columns: 28px minmax(0, 1fr); padding: 11px 12px; gap: 9px; }
+  .phase-num { font-size: 20px; padding-right: 7px; }
+  .phase h3 { font-size: 16.5px; }
+  .statgrid { grid-template-columns: 1fr 1fr; }
+  .ctile .row { flex-wrap: wrap; }
+  .miss-card dl { grid-template-columns: 46px 1fr; }
+  .miss-card .actions { flex-wrap: wrap; }
+  .btn { padding: 8px 12px; }
+  .noscript { margin: 12px 13px 0; padding: 12px 14px; }
+  .toast { bottom: 14px; }
+}
+
+@media (max-width: 420px) {
+  .kicker { font-size: 9.5px; letter-spacing: .16em; flex-wrap: wrap; }
+  .dashboard { gap: 8px; }
+  .stat-value { font-size: 23px; }
+  .stat-label { font-size: 8px; }
+  .tab { font-size: 11px; }
+  .tabnum { display: none; }
+  .statgrid { grid-template-columns: 1fr; }
+  .listpane { max-height: 42vh; }
+  .detail-head .btn { width: 100%; margin-left: 0; }
+  .guidegrid { gap: 7px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
 }
